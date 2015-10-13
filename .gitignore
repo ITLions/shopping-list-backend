@@ -1,2 +1,4 @@
 .idea/
 target/
+logs/application.log
+shopping-list-backend.iml
