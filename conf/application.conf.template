@@ -59,11 +59,6 @@ logger.application=DEBUG
 
 slick.dbs.default.driver="slick.driver.PostgresDriver$"
 slick.dbs.default.db.driver="org.postgresql.Driver"
-slick.dbs.default.db.url=${JDBC_DATABASE_URL}
-slick.dbs.default.db.user=${?JDBC_DATABASE_USERNAME}
-slick.dbs.default.db.password=${?JDBC_DATABASE_PASSWORD}
-//slick.dbs.default.driver="slick.driver.PostgresDriver$"
-//slick.dbs.default.db.driver="org.postgresql.Driver"
-//slick.dbs.default.db.url="jdbc:postgresql://127.0.0.1/shophing"
-//slick.dbs.default.db.user="shoping"
-//slick.dbs.default.db.password="111111"
+slick.dbs.default.db.url="jdbc:postgresql://127.0.0.1/database_name_here"
+slick.dbs.default.db.user="user_here"
+slick.dbs.default.db.password="password_here"

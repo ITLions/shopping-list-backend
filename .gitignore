@@ -2,3 +2,4 @@
 target/
 logs/application.log
 shopping-list-backend.iml
+conf/application.conf
