@@ -1,10 +1,10 @@
 import com.typesafe.config.ConfigFactory
 
-name := "ShopingList"
+name := "ShoppingList"
 
 version := "0.13.8"
 
-lazy val `shopinglist` = (project in file(".")).enablePlugins(PlayScala)
+lazy val `shoppinglist` = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.6"
 
@@ -24,12 +24,11 @@ herokuAppName in Compile := "pure-reaches-2979"
 
 val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
 slick <<= slickCodeGenTask
-val root = project.in(file("."))
 
 // code generation task
 lazy val slick = TaskKey[Seq[File]]("gen-tables")
 lazy val slickCodeGenTask = (sourceManaged, dependencyClasspath in Compile, runner in Compile, streams) map { (dir, cp, r, s) =>
-    val outputDir = root.base.getAbsoluteFile / "app"
+    val outputDir = `shoppinglist`.base.getAbsoluteFile / "app"
     val url = conf.getString("slick.dbs.default.db.url")
     val jdbcDriver = conf.getString("slick.dbs.default.db.driver")
     val slickDriver = conf.getString("slick.dbs.default.driver").dropRight(1)
