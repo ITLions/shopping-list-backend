@@ -20,31 +20,31 @@ class CategoriesController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
   val db = dbConfigProvider.get[JdbcProfile].db
 
   def create = Action.async(BodyParsers.parse.json) { request =>
-    request.body.validate[CategoryDto].fold(
+    request.body.validate[CategoryDto](CategoryDto.categoryCreateReads).fold(
       errors => {
         Future {
           badRequestResponse("Validation failed", JsError.toJson(errors))
         }
       },
-      categoryDto => {
+      dto => {
         val category = new CategoriesRow(UUID.randomUUID(), new Timestamp(System.currentTimeMillis()),
-          new Timestamp(System.currentTimeMillis()), categoryDto.name, categoryDto.description, categoryDto.image)
+          new Timestamp(System.currentTimeMillis()), dto.name, dto.description, dto.image)
         db.run(Categories += category).map { pi => okResponse() }
       }
     )
   }
 
-  def update = Action.async(BodyParsers.parse.json) {request =>
-    request.body.validate[CategoryDto].fold(
+  def update = Action.async(BodyParsers.parse.json) { request =>
+    request.body.validate[CategoryDto](CategoryDto.categoryUpdateReads).fold(
       errors => {
         Future {
           badRequestResponse("Validation failed", JsError.toJson(errors))
         }
       },
-      categoryDto => {
-        Future {
-          okResponse()
-        }
+      dto => {
+        db.run(Categories.filter(c => c.id === dto.id).map(c => (c.name, c.description, c.icon, c.updatedDate))
+          .update(dto.name, dto.description, dto.image, new Timestamp(System.currentTimeMillis())))
+          .map(i => okResponse(JsNumber(i)))
       }
     )
   }

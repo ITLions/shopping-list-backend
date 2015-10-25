@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET         /                      controllers.Application.index
+GET         /                         controllers.Application.index
 
 # Categories
-POST        /categories/new        controllers.CategoriesController.create
-
+POST        /categories/new           controllers.CategoriesController.create
+PUT         /categoties/update        controllers.CategoriesController.update
