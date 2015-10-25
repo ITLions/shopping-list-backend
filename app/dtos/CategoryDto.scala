@@ -15,5 +15,5 @@ object CategoryDto {
       (JsPath \ "description").readNullable[String](Reads.maxLength[String](255)) and
       (JsPath \ "image").readNullable[String](Reads.maxLength[String](255))
     )(CategoryDto.apply _)
-  implicit val categoryDtoWrites = Json.writes[CategoryDto]
+  implicit val categoryWrites = Json.writes[CategoryDto]
 }
