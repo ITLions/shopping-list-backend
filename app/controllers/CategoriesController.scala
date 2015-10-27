@@ -20,7 +20,7 @@ class CategoriesController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
   val db = dbConfigProvider.get[JdbcProfile].db
 
   def create = Action.async(BodyParsers.parse.json) { request =>
-    request.body.validate[CategoryDto](CategoryDto.categoryCreateReads).fold(
+    request.body.validate[CategoryDto].fold(
       errors => {
         Future {
           badRequestResponse("Validation failed", JsError.toJson(errors))
@@ -34,18 +34,26 @@ class CategoriesController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
     )
   }
 
-  def update = Action.async(BodyParsers.parse.json) { request =>
-    request.body.validate[CategoryDto](CategoryDto.categoryUpdateReads).fold(
+  def update(id: UUID) = Action.async(BodyParsers.parse.json) { request =>
+    request.body.validate[CategoryDto].fold(
       errors => {
         Future {
           badRequestResponse("Validation failed", JsError.toJson(errors))
         }
       },
       dto => {
-        db.run(Categories.filter(c => c.id === dto.id).map(c => (c.name, c.description, c.icon, c.updatedDate))
+        db.run(Categories.filter(c => c.id === id).map(c => (c.name, c.description, c.icon, c.updatedDate))
           .update(dto.name, dto.description, dto.image, new Timestamp(System.currentTimeMillis())))
           .map(i => okResponse(JsNumber(i)))
       }
     )
+  }
+
+  def list(offset: Long, limit: Long) = Action.async { request =>
+    db.run(Categories.drop(offset).take(limit).map(c => (c.id, c.name, c.description, c.icon)).result).map {
+      resultSet =>
+        val dtos = resultSet.map(row => new CategoryDto(row._1, row._2, row._3, row._4))
+        okResponse(Json.toJson(dtos))
+    }
   }
 }

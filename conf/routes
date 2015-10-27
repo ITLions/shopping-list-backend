@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
-GET         /                         controllers.Application.index
+GET         /                                    @controllers.Application.index
 
 # Categories
-POST        /categories/new           controllers.CategoriesController.create
-PUT         /categoties/update        controllers.CategoriesController.update
+POST        /api/v1/categories/new               @controllers.CategoriesController.create
+PUT         /api/v1/categories/:id/update        @controllers.CategoriesController.update(id: java.util.UUID)
+GET         /api/v1/categories                   @controllers.CategoriesController.list(offset: Long, limit: Long)
