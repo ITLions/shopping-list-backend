@@ -4,7 +4,7 @@ import java.util.UUID
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
-import play.api.libs.json.{Json, Writes, JsPath, Reads}
+import play.api.libs.json.{JsPath, Reads, Writes}
 
 
 class CategoryDto(val id: UUID, val name: String, val description: Option[String], val image: Option[String]) {

@@ -44,16 +44,18 @@ class CategoriesController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
       dto => {
         db.run(Categories.filter(c => c.id === id).map(c => (c.name, c.description, c.icon, c.updatedDate))
           .update(dto.name, dto.description, dto.image, new Timestamp(System.currentTimeMillis())))
-          .map(i => okResponse(JsNumber(i)))
+          .map({ case 1 => okResponse() case _ => badRequestResponse() })
       }
     )
   }
 
   def list(offset: Long, limit: Long) = Action.async { request =>
-    db.run(Categories.drop(offset).take(limit).map(c => (c.id, c.name, c.description, c.icon)).result).map {
-      resultSet =>
-        val dtos = resultSet.map(row => new CategoryDto(row._1, row._2, row._3, row._4))
-        okResponse(Json.toJson(dtos))
+    db.run(Categories.countDistinct.result) flatMap { count =>
+      db.run(Categories.drop(offset).take(limit).map(c => (c.id, c.name, c.description, c.icon)).result).map {
+        resultSet =>
+          val dtos = resultSet.map(row => new CategoryDto(row._1, row._2, row._3, row._4))
+          listResponse(count, Json.toJson(dtos))
+      }
     }
   }
 }
