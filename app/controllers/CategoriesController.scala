@@ -49,6 +49,10 @@ class CategoriesController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
     )
   }
 
+  def delete(id: UUID) = Action.async { request =>
+      db.run(Categories.filter(c=>c.id === id).delete).map({ case 1 => okResponse() case _ => badRequestResponse() })
+  }
+
   def list(offset: Long, limit: Long) = Action.async { request =>
     db.run(Categories.countDistinct.result) flatMap { count =>
       db.run(Categories.drop(offset).take(limit).map(c => (c.id, c.name, c.description, c.icon)).result).map {

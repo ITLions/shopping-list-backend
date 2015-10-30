@@ -26,7 +26,7 @@ object CategoryDto {
         (JsPath \ "image").readNullable[String](maxLength[String](255))
       )((name: String, description: Option[String], image: Option[String]) => new CategoryDto(name, description, image))
 
-  implicit val categoryWrites: Writes[CategoryDto] = (
+  implicit val categoryDtoWrites: Writes[CategoryDto] = (
       (JsPath \ "id").write[UUID] and
       (JsPath \ "name").write[String] and
       (JsPath \ "description").writeNullable[String] and
