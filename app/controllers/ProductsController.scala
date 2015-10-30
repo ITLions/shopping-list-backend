@@ -33,13 +33,15 @@ class ProductsController @Inject() (dbConfigProvider: DatabaseConfigProvider) ex
 
 
   def delete(id: UUID) = Action.async { request =>
-    db.run(Products.filter(c=>c.id === id).delete).map({ case 1 => okResponse() case _ => badRequestResponse() })
+    db.run(Products.filter(product => product.id === id).delete)
+      .map({ case 1 => okResponse() case _ => badRequestResponse() })
   }
 
   def list(offset: Long, limit: Long) = Action.async { request =>
     db.run(Products.countDistinct.result) flatMap { count =>
-      db.run(Products.drop(offset).take(limit).map(c => (c.id, c.name, c.description, c.icon, c.categoryId, c.unitId)).result).map {
-        resultSet =>
+      db.run(Products.drop(offset).take(limit)
+        .map(product => (product.id, product.name, product.description,
+          product.icon, product.categoryId, product.unitId)).result).map { resultSet =>
           val dtos = resultSet.map(row => new ProductDto(row._1, row._2, row._3, row._4, row._5, row._6))
           listResponse(count, Json.toJson(dtos))
       }
