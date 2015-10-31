@@ -52,12 +52,10 @@ class CategoriesController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
   }
 
   def list(offset: Long, limit: Long) = Action.async { request =>
-    db.run(Categories.countDistinct.result) flatMap { count =>
-      db.run(Categories.drop(offset).take(limit)
-        .map(category => (category.id, category.name, category.description, category.icon)).result).map { resultSet =>
-          val dtos = resultSet.map(row => new CategoryDto(row._1, row._2, row._3, row._4))
-          listResponse(count, Json.toJson(dtos))
-      }
+    db.run(Categories.drop(offset).take(limit)
+      .map(category => (category.id, category.name, category.description, category.icon)).result).map { resultSet =>
+      val dtos = resultSet.map(row => new CategoryDto(row._1, row._2, row._3, row._4))
+      listResponse(dtos.length, Json.toJson(dtos))
     }
   }
 }
