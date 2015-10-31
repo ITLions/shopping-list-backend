@@ -26,8 +26,8 @@ object ProductDto {
       (JsPath \ "image").readNullable[String](maxLength[String](255)) and
       (JsPath \ "categoryId").read[UUID] and
       (JsPath \ "unitId").readNullable[UUID]
-    )((name: String, description: Option[String], image: Option[String], categoryId: UUID, unitID: Option[UUID]) =>
-    new ProductDto(name, description, image, categoryId, unitID))
+    )((name: String, description: Option[String], image: Option[String], categoryId: UUID, unitID: Option[UUID])
+    => new ProductDto(name, description, image, categoryId, unitID))
 
   implicit val productDtoWrites: Writes[ProductDto] = (
       (JsPath \ "id").write[UUID] and

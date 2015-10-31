@@ -31,6 +31,19 @@ class ProductsController @Inject() (dbConfigProvider: DatabaseConfigProvider) ex
     })
   }
 
+  def update(id: UUID) = Action.async(BodyParsers.parse.json) { request =>
+    request.body.validate[ProductDto].fold(
+      errors => { Future {
+          badRequestResponse("Validation failed", JsError.toJson(errors))
+        }},
+      dto => {
+        db.run(Products.filter(product => product.id === id)
+          .map(product => (product.name, product.description, product.icon, product.updatedDate, product.categoryId, product.unitId))
+          .update((dto.name, dto.description, dto.image, new Timestamp(System.currentTimeMillis()), dto.categoryId, dto.unitId))
+          .map({ case 1 => okResponse() case _ => badRequestResponse() }))
+      }
+    )
+  }
 
   def delete(id: UUID) = Action.async { request =>
     db.run(Products.filter(product => product.id === id).delete)
