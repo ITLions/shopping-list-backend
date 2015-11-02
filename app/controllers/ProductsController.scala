@@ -38,8 +38,10 @@ class ProductsController @Inject() (dbConfigProvider: DatabaseConfigProvider) ex
         }},
       dto => {
         db.run(Products.filter(product => product.id === id)
-          .map(product => (product.name, product.description, product.icon, product.updatedDate, product.categoryId, product.unitId))
-          .update((dto.name, dto.description, dto.image, new Timestamp(System.currentTimeMillis()), dto.categoryId, dto.unitId))
+          .map(product => (product.name, product.description, product.icon, product.updatedDate,
+            product.categoryId, product.unitId))
+          .update((dto.name, dto.description, dto.image, new Timestamp(System.currentTimeMillis()),
+            dto.categoryId, dto.unitId))
           .map({ case 1 => okResponse() case _ => badRequestResponse() }))
       }
     )
