@@ -3,27 +3,27 @@ CREATE TABLE categories (
   id           UUID PRIMARY KEY,
   created_date TIMESTAMP NOT NULL DEFAULT now(),
   updated_date TIMESTAMP NOT NULL DEFAULT now(),
-  name         VARCHAR(100) NOT NULL,
+  name         VARCHAR(100) NOT NULL UNIQUE,
   description  VARCHAR(255),
-  icon         VARCHAR(255)
+  icon         VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE units (
   id           UUID PRIMARY KEY,
   created_date TIMESTAMP NOT NULL DEFAULT now(),
   updated_date TIMESTAMP NOT NULL DEFAULT now(),
-  name         VARCHAR(50) NOT NULL
+  name         VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE products (
   id           UUID PRIMARY KEY,
   created_date TIMESTAMP NOT NULL DEFAULT now(),
   updated_date TIMESTAMP NOT NULL DEFAULT now(),
-  name         VARCHAR(100) NOT NULL,
+  name         VARCHAR(100) NOT NULL UNIQUE,
   description  VARCHAR(255),
-  icon         VARCHAR(255),
+  icon         VARCHAR(255) NOT NULL UNIQUE,
   category_id  UUID         NOT NULL REFERENCES categories (id),
-  unit_id      UUID REFERENCES units (id)
+  unit_id      UUID NOT NULL REFERENCES units (id)
 );
 
 CREATE TABLE product_lists (
@@ -40,7 +40,7 @@ CREATE TABLE list_item (
   checked         BOOLEAN NOT NULL DEFAULT FALSE,
   product_id      UUID    NOT NULL REFERENCES products (id),
   product_list_id UUID    NOT NULL REFERENCES product_lists (id),
-  amount          INTEGER
+  amount          INTEGER NOT NULL
 );
 
 # --- !Downs
