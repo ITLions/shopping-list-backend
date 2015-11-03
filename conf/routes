@@ -3,16 +3,16 @@
 # ~~~~
 
 # Home page
-GET         /                                    @controllers.Application.index
+GET           /                                    @controllers.Application.index
 
 # Categories
-POST        /api/v1/categories/new               @controllers.CategoriesController.create
-PUT         /api/v1/categories/:id/update        @controllers.CategoriesController.update(id: java.util.UUID)
-GET         /api/v1/categories                   @controllers.CategoriesController.list(offset: Long, limit: Long)
-DELETE      /api/v1/categories/:id/delete        @controllers.CategoriesController.delete(id: java.util.UUID)
+POST          /api/v1/categories/new               @controllers.CategoriesController.create
+POST          /api/v1/categories/:id/update        @controllers.CategoriesController.update(id: java.util.UUID)
+GET           /api/v1/categories                   @controllers.CategoriesController.list(offset: Long, limit: Long)
+DELETE        /api/v1/categories/:id/delete        @controllers.CategoriesController.delete(id: java.util.UUID)
 
 #Products
-POST        /api/v1/products/new                 @controllers.ProductsController.create
-PUT         /api/v1/products/:id/update          @controllers.ProductsController.update(id: java.util.UUID)
-GET         /api/v1/products                     @controllers.ProductsController.list(offset: Long, limit: Long)
-DELETE      /api/v1/products/:id/delete          @controllers.ProductsController.delete(id: java.util.UUID)
+POST          /api/v1/products/new                 @controllers.ProductsController.create
+POST          /api/v1/products/:id/update          @controllers.ProductsController.update(id: java.util.UUID)
+GET           /api/v1/products                     @controllers.ProductsController.list(offset: Long, limit: Long)
+DELETE        /api/v1/products/:id/delete          @controllers.ProductsController.delete(id: java.util.UUID)
