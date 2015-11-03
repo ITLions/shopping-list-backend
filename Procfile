@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/shopinglist -Dhttp.port=${PORT} -Ddb.default.url=${DATABASE_URL}
+web: target/universal/stage/bin/shoppinglist -Dhttp.port=${PORT} -Ddb.default.url=${DATABASE_URL}
