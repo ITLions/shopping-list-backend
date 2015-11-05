@@ -16,3 +16,9 @@ POST          /api/v1/products/new                 @controllers.ProductsControll
 POST          /api/v1/products/:id/update          @controllers.ProductsController.update(id: java.util.UUID)
 GET           /api/v1/products                     @controllers.ProductsController.list(offset: Long, limit: Long)
 DELETE        /api/v1/products/:id/delete          @controllers.ProductsController.delete(id: java.util.UUID)
+
+# Units
+POST          /api/v1/units/new                    @controllers.UnitsController.create
+POST          /api/v1/units/:id/update             @controllers.UnitsController.update(id: java.util.UUID)
+GET           /api/v1/units                        @controllers.UnitsController.list(offset: Long, limit: Long)
+DELETE        /api/v1/units                        @controllers.UnitsController.delete(id: java.util.UUID)
